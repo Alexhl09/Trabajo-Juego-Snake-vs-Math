@@ -580,7 +580,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
            
             
             cabeza.run(SKAction.moveTo(x: location.x, duration: 0.25))
-            var d = 0.2
+            var d = 0.01
             for i in cola
             {
                 i.run(SKAction.moveTo(x: cabeza.position.x, duration: d))
