@@ -161,27 +161,27 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         gana.position = CGPoint(x: 0, y: 0)
         gana.zPosition = 4
         addChild(gana)
-       regreso.name = "Regreso"
-       regreso = SKSpriteNode(imageNamed: "boton_back")
-        regreso.position = CGPoint(x: 0, y: -500)
-        regreso.setScale(0.5)
-        regreso.zPosition = 5
-        self.addChild(regreso)
+    crearRegreso()
 
     }
-    func crearMensajePerdedor()
+    func crearRegreso()
     {
-        pierde = SKSpriteNode(imageNamed: "perdiste")
-        pierde.setScale(0.5)
-        pierde.position = CGPoint(x: 0, y: 0)
-        pierde.zPosition = 4
-        addChild(pierde)
         regreso = SKSpriteNode(imageNamed: "boton_back")
         regreso.name = "gana"
         regreso.position = CGPoint(x: 0, y: -500)
         regreso.setScale(0.5)
         regreso.zPosition = 5
         self.addChild(regreso)
+    }
+    func crearMensajePerdedor()
+    {
+        
+        pierde = SKSpriteNode(imageNamed: "perdiste")
+        pierde.setScale(0.5)
+        pierde.position = CGPoint(x: 0, y: 0)
+        pierde.zPosition = 4
+        addChild(pierde)
+       crearRegreso()
     }
     
     override func sceneDidLoad() {
@@ -202,6 +202,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
             print("No fondo")
         }
         reproductor.play()
+        reproductor.numberOfLoops = -1
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVector(dx: 0, dy: -0.7)
         background = self.childNode(withName: "background") as! SKSpriteNode
@@ -283,7 +284,10 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         resupuesta.physicsBody?.affectedByGravity = false
         self.addChild(resupuesta)
         var sum = Int(arc4random_uniform(40)) - 20
-        
+        if sum == 0
+        {
+            sum = -1
+        }
         res = "\(numero1 + numero2 + sum)"
         print(res)
         textMalaRes = SKLabelNode(text: res)
@@ -335,7 +339,10 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         resupuesta2.physicsBody?.affectedByGravity = false
         self.addChild(resupuesta2)
         var sum = Int(arc4random_uniform(40)) - 20
-        
+        if sum == 0
+        {
+            sum = -1
+        }
         res = "\(numero1 + numero2 + sum)"
         textMalaRes2 = SKLabelNode(text: res)
         textMalaRes2.fontSize =  45
@@ -386,7 +393,10 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
         resupuesta3.physicsBody?.affectedByGravity = false
         self.addChild(resupuesta3)
         var sum = Int(arc4random_uniform(40)) - 20
-        
+        if sum == 0
+        {
+            sum = -1
+        }
         res = "\(numero1 + numero2 + sum)"
         textMalaRes3 = SKLabelNode(text: res)
         textMalaRes3.fontSize =  45
@@ -536,6 +546,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
             }
             if (self.scene?.isPaused)!
             {
+                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                 if atPoint(location).name == "Resume"{
                     quitB.removeFromParent()
                     resumeB.removeFromParent()
@@ -647,6 +658,7 @@ class GamePlayScene: SKScene, SKPhysicsContactDelegate {
             firstBody.categoryBitMask == CuerpoFisico.respuestaCorrecta && secondBody.categoryBitMask == CuerpoFisico.cabeza
         {
             AudioServicesPlaySystemSound(respuestaBuena)
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             if numeroVidas < 10
             {
                 if firstBody.categoryBitMask == CuerpoFisico.respuestaCorrecta
